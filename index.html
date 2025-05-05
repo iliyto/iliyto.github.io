@@ -1,47 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>AI Image Generator - Pollinations</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Générateur d'Images IA</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      padding: 2rem;
-      background: #f4f4f4;
+      font-family: sans-serif;
+      background: #f9f9f9;
+      padding: 1rem;
+      max-width: 600px;
+      margin: auto;
     }
-    input, button {
-      padding: 0.5rem;
-      font-size: 1rem;
-      width: 100%;
+    h1 {
+      font-size: 1.5rem;
+      text-align: center;
       margin-bottom: 1rem;
     }
+    input, button {
+      width: 100%;
+      font-size: 1rem;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+    }
     img {
-      max-width: 100%;
-      display: block;
+      width: 100%;
       margin-top: 1rem;
+      border-radius: 8px;
     }
   </style>
 </head>
 <body>
-  <h1>Generate AI Image (Pollinations)</h1>
-  <input type="text" id="prompt" placeholder="Enter your prompt, e.g. 'a futuristic city at sunset'" />
-  <button onclick="generateImage()">Generate</button>
-  <img id="result" src="" alt="Generated image will appear here" />
+  <h1>Générateur d'Images IA</h1>
+  <input type="text" id="prompt" placeholder="Décrivez l'image souhaitée..." />
+  <button onclick="genererImage()">Générer</button>
+  <img id="resultat" src="" alt="L'image générée apparaîtra ici" />
 
   <script>
-    function generateImage() {
+    function genererImage() {
       const prompt = document.getElementById('prompt').value.trim();
       if (!prompt) {
-        alert('Please enter a prompt.');
+        alert('Veuillez entrer une description.');
         return;
       }
 
       const encodedPrompt = encodeURIComponent(prompt);
-      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}`;
+      const seed = Date.now(); // Utilise le timestamp actuel comme seed
+      const url = `https://image.pollinations.ai/prompt/${encodedPrompt}?seed=${seed}&nologo=true&private=true`;
 
-      const img = document.getElementById('result');
-      img.src = imageUrl;
-      img.alt = `Generated image for: ${prompt}`;
+      const img = document.getElementById('resultat');
+      img.src = url;
+      img.alt = `Image générée pour : ${prompt}`;
     }
   </script>
 </body>
