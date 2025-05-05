@@ -108,7 +108,7 @@
       }
 
       const enhance = document.getElementById('enhance').checked;
-      const seed = Date.now();
+      const seed = Date.now().toString() + Math.random().toString(36).substring(2);
 
       const params = new URLSearchParams();
       params.append('seed', seed);
