@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Image Generator - Pollinations</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #f4f4f4;
+    }
+    input, button {
+      padding: 0.5rem;
+      font-size: 1rem;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    img {
+      max-width: 100%;
+      display: block;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Generate AI Image (Pollinations)</h1>
+  <input type="text" id="prompt" placeholder="Enter your prompt, e.g. 'a futuristic city at sunset'" />
+  <button onclick="generateImage()">Generate</button>
+  <img id="result" src="" alt="Generated image will appear here" />
+
+  <script>
+    function generateImage() {
+      const prompt = document.getElementById('prompt').value.trim();
+      if (!prompt) {
+        alert('Please enter a prompt.');
+        return;
+      }
+
+      const encodedPrompt = encodeURIComponent(prompt);
+      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}`;
+
+      const img = document.getElementById('result');
+      img.src = imageUrl;
+      img.alt = `Generated image for: ${prompt}`;
+    }
+  </script>
+</body>
+</html>
