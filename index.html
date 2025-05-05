@@ -3,128 +3,1056 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Générateur d'Images IA</title>
+  <title>Artiste IA - Générateur d'Images</title>
+  <!-- Importer Font Awesome pour les icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Importer Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap" />
+  <!-- Importer Animate.css pour les animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <!-- Styles -->
   <style>
     :root {
-      --bg-color: #121212;
+      --bg-gradient: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+      --card-bg: rgba(25, 25, 45, 0.8);
+      --accent-color: #6c63ff;
+      --accent-color-hover: #5a52e0;
       --text-color: #ffffff;
-      --accent-color: #1db954;
-      --input-bg: #1e1e1e;
-      --border-radius: 12px;
-      --font-family: 'Segoe UI', sans-serif;
+      --text-secondary: #b8b8d4;
+      --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --border-radius: 16px;
+      --input-bg: rgba(15, 15, 30, 0.6);
+      --success-color: #4caf50;
+      --warning-color: #ff9800;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-      margin: 0;
-      padding: 1rem;
-      background-color: var(--bg-color);
+      min-height: 100vh;
+      background: var(--bg-gradient);
       color: var(--text-color);
-      font-family: var(--font-family);
+      font-family: 'Poppins', sans-serif;
+      padding: 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+      animation: fadeInDown 1s;
     }
 
     h1 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(to right, #6c63ff, #ff6584);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
-    .container {
-      width: 100%;
-      max-width: 500px;
-      background-color: var(--input-bg);
-      padding: 1rem;
+    .tagline {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+    }
+
+    .card {
+      background: var(--card-bg);
       border-radius: var(--border-radius);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      animation: fadeIn 1s;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      color: var(--accent-color);
     }
 
     textarea {
       width: 100%;
-      height: 100px;
-      background-color: var(--bg-color);
+      min-height: 120px;
+      background-color: var(--input-bg);
       color: var(--text-color);
-      border: none;
-      border-radius: var(--border-radius);
-      padding: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px 12px 12px 40px;
       font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
       resize: vertical;
-      box-sizing: border-box;
+      transition: all 0.3s ease;
     }
 
-    .option {
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+    }
+
+    textarea::placeholder {
+      color: rgba(184, 184, 212, 0.6);
+    }
+
+    .options-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .option-card {
+      flex: 1;
+      min-width: 120px;
+      background: var(--input-bg);
+      border-radius: 12px;
+      padding: 0.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .option-card:hover {
+      background: rgba(108, 99, 255, 0.1);
+      border-color: var(--accent-color);
+    }
+
+    .option-card.active {
+      background: rgba(108, 99, 255, 0.2);
+      border-color: var(--accent-color);
+    }
+
+    .option-card i {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent-color);
+    }
+
+    .option-card label {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-top: 0.5rem;
+    }
+
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.9rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
       display: flex;
       align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn:hover {
+      background-color: var(--accent-color-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-icon {
+      margin-right: 0.5rem;
+    }
+
+    .btn-loading {
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    .btn-loading .btn-text {
+      visibility: hidden;
+    }
+
+    .btn-loading::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .result-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      margin-top: 1.5rem;
+      box-shadow: var(--card-shadow);
+      max-height: 0;
+      transition: max-height 0.5s ease;
+    }
+
+    .result-container.show {
+      max-height: 600px;
+    }
+
+    .result-image {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      border-radius: 12px;
+      transition: transform 0.5s ease;
+    }
+
+    .result-actions {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--accent-color);
+      transform: scale(1.1);
+    }
+
+    .toast {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      color: white;
+      font-weight: 500;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      max-width: 300px;
+    }
+
+    .toast.success {
+      background-color: var(--success-color);
+    }
+
+    .toast.warning {
+      background-color: var(--warning-color);
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    .history-container {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 12px;
+      padding: 8px 0;
+      scrollbar-width: thin;
       margin: 1rem 0;
     }
 
-    .option input[type="checkbox"] {
-      margin-right: 0.5rem;
-      accent-color: var(--accent-color);
-    }
-
-    button {
-      width: 100%;
-      padding: 0.75rem;
-      font-size: 1rem;
-      background-color: var(--accent-color);
-      color: var(--text-color);
-      border: none;
-      border-radius: var(--border-radius);
+    .history-item {
+      min-width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      overflow: hidden;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: all 0.3s ease;
+      opacity: 0.7;
+      border: 2px solid transparent;
     }
 
-    button:hover {
-      background-color: #17a44c;
+    .history-item:hover {
+      opacity: 1;
+      transform: translateY(-3px);
     }
 
-    img {
+    .history-item.active {
+      opacity: 1;
+      border-color: var(--accent-color);
+    }
+
+    .history-img {
       width: 100%;
-      margin-top: 1rem;
-      border-radius: var(--border-radius);
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .style-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .style-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0.5rem;
+      border-radius: 8px;
+      background: var(--input-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .style-item:hover {
+      background: rgba(108, 99, 255, 0.1);
+    }
+
+    .style-item.active {
+      background: rgba(108, 99, 255, 0.2);
+      border-color: var(--accent-color);
+    }
+
+    .style-icon {
+      font-size: 1.2rem;
+      color: var(--accent-color);
+      margin-bottom: 0.3rem;
+    }
+
+    .style-name {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
+    .tabs {
+      display: flex;
+      margin-bottom: 1rem;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-bottom: 2px solid transparent;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .tab.active {
+      border-bottom-color: var(--accent-color);
+      color: var(--text-color);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      .options-container {
+        grid-template-columns: 1fr 1fr;
+      }
+      .style-selector {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .skeleton {
+      background: linear-gradient(90deg, var(--input-bg) 25%, rgba(40, 40, 70, 0.5) 50%, var(--input-bg) 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+      border-radius: 12px;
+      width: 100%;
+      height: 300px;
+    }
+
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Water drop effect */
+    .water-drop {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      top: -150px;
+      right: -150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(108, 99, 255, 0.3) 0%, rgba(108, 99, 255, 0) 70%);
+      z-index: -1;
+    }
+
+    .water-drop:nth-child(2) {
+      top: auto;
+      right: auto;
+      bottom: -100px;
+      left: -50px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255, 101, 132, 0.2) 0%, rgba(255, 101, 132, 0) 70%);
+    }
+
+    .setting-group {
+      margin-bottom: 1rem;
+    }
+
+    .setting-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .slider {
+      flex-grow: 1;
+      height: 5px;
+      background: var(--input-bg);
+      border-radius: 5px;
+      appearance: none;
+      outline: none;
+    }
+
+    .slider::-webkit-slider-thumb {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent-color);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .slider-value {
+      min-width: 30px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .popup.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .popup-content {
+      max-width: 90%;
+      max-height: 90%;
+      position: relative;
+    }
+
+    .popup-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .popup-img {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 12px;
+      display: block;
     }
   </style>
 </head>
 <body>
-  <h1>Générateur d'Images IA</h1>
-  <div class="container">
-    <textarea id="prompt" placeholder="Décrivez l'image souhaitée..."></textarea>
-    <div class="option">
-      <input type="checkbox" id="enhance" />
-      <label for="enhance">Améliorer l'image</label>
+  <!-- Background effects -->
+  <div class="water-drop"></div>
+  <div class="water-drop"></div>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast"></div>
+
+  <div class="app-container">
+    <header>
+      <h1>Artiste IA</h1>
+      <p class="tagline">Transformez vos idées en images captivantes</p>
+    </header>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="creation">Création</div>
+      <div class="tab" data-tab="gallery">Galerie</div>
+      <div class="tab" data-tab="settings">Paramètres</div>
     </div>
-    <button onclick="genererImage()">Générer</button>
-    <img id="resultat" src="" alt="L'image générée apparaîtra ici" />
+
+    <div id="creation-tab" class="tab-content active">
+      <div class="card">
+        <div class="input-group">
+          <i class="fa-solid fa-lightbulb input-icon"></i>
+          <textarea id="prompt" placeholder="Décrivez l'image de vos rêves... (ex: un chat astronaute flottant dans l'espace)"></textarea>
+        </div>
+
+        <h3 class="setting-label">Style visuel</h3>
+        <div class="style-selector">
+          <div class="style-item active" data-style="aucun">
+            <i class="fa-solid fa-palette style-icon"></i>
+            <span class="style-name">Aucun</span>
+          </div>
+          <div class="style-item" data-style="3d_render">
+            <i class="fa-solid fa-cube style-icon"></i>
+            <span class="style-name">3D</span>
+          </div>
+          <div class="style-item" data-style="anime">
+            <i class="fa-solid fa-tv style-icon"></i>
+            <span class="style-name">Anime</span>
+          </div>
+          <div class="style-item" data-style="digital_art">
+            <i class="fa-solid fa-paintbrush style-icon"></i>
+            <span class="style-name">Digital Art</span>
+          </div>
+          <div class="style-item" data-style="photographic">
+            <i class="fa-solid fa-camera style-icon"></i>
+            <span class="style-name">Photo</span>
+          </div>
+          <div class="style-item" data-style="pixel_art">
+            <i class="fa-solid fa-gamepad style-icon"></i>
+            <span class="style-name">Pixel Art</span>
+          </div>
+        </div>
+
+        <div class="options-container">
+          <div class="option-card" id="enhance-option">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <label for="enhance">Amélioration</label>
+            <input type="checkbox" id="enhance" checked />
+          </div>
+          <div class="option-card" id="hd-option">
+            <i class="fa-solid fa-expand"></i>
+            <label for="hd">Haute définition</label>
+            <input type="checkbox" id="hd" />
+          </div>
+        </div>
+
+        <button id="generate-btn" class="btn">
+          <i class="fa-solid fa-bolt btn-icon"></i>
+          <span class="btn-text">Générer l'image</span>
+        </button>
+      </div>
+
+      <div id="result-container" class="result-container">
+        <div id="image-loading" class="skeleton"></div>
+        <img id="result-image" class="result-image" src="" alt="Image générée" style="display: none;" />
+        <div class="result-actions">
+          <div class="action-btn" id="save-btn" title="Sauvegarder">
+            <i class="fa-solid fa-download"></i>
+          </div>
+          <div class="action-btn" id="share-btn" title="Partager">
+            <i class="fa-solid fa-share-nodes"></i>
+          </div>
+          <div class="action-btn" id="regenerate-btn" title="Regénérer">
+            <i class="fa-solid fa-rotate"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="gallery-tab" class="tab-content">
+      <div class="card">
+        <h3>Images récentes</h3>
+        <div id="history-container" class="history-container">
+          <p class="tagline">Vos images générées apparaîtront ici</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="settings-tab" class="tab-content">
+      <div class="card">
+        <div class="setting-group">
+          <label class="setting-label">Qualité d'image</label>
+          <div class="slider-container">
+            <input type="range" min="1" max="3" value="2" class="slider" id="quality-slider">
+            <span class="slider-value" id="quality-value">Standard</span>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label">Thème</label>
+          <div class="options-container">
+            <div class="option-card active" id="dark-theme">
+              <i class="fa-solid fa-moon"></i>
+              <label>Sombre</label>
+            </div>
+            <div class="option-card" id="light-theme">
+              <i class="fa-solid fa-sun"></i>
+              <label>Clair</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label">À propos</label>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+            Artiste IA utilise l'API Pollinations.ai pour générer des images à partir de descriptions textuelles. 
+            Version 1.0 | Développé avec ❤️
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <!-- Image popup -->
+  <div id="image-popup" class="popup">
+    <div class="popup-content">
+      <div class="popup-close" id="popup-close">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+      <img id="popup-img" class="popup-img" src="" alt="Image agrandie">
+    </div>
+  </div>
+
+  <!-- Importer Vanilla Tilt pour les effets 3D subtils -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+  
   <script>
-    function genererImage() {
-      const prompt = document.getElementById('prompt').value.trim();
-      if (!prompt) {
-        alert('Veuillez entrer une description.');
+    // Variables globales
+    let currentStyle = "aucun";
+    let generatedImages = [];
+    let isGenerating = false;
+
+    // Éléments DOM
+    const generateBtn = document.getElementById('generate-btn');
+    const promptInput = document.getElementById('prompt');
+    const enhanceCheck = document.getElementById('enhance');
+    const hdCheck = document.getElementById('hd');
+    const resultContainer = document.getElementById('result-container');
+    const resultImage = document.getElementById('result-image');
+    const imageLoading = document.getElementById('image-loading');
+    const historyContainer = document.getElementById('history-container');
+    const toast = document.getElementById('toast');
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const styleItems = document.querySelectorAll('.style-item');
+    const qualitySlider = document.getElementById('quality-slider');
+    const qualityValue = document.getElementById('quality-value');
+    const imagePopup = document.getElementById('image-popup');
+    const popupImg = document.getElementById('popup-img');
+    const popupClose = document.getElementById('popup-close');
+    const saveBtn = document.getElementById('save-btn');
+    const shareBtn = document.getElementById('share-btn');
+    const regenerateBtn = document.getElementById('regenerate-btn');
+    const enhanceOption = document.getElementById('enhance-option');
+    const hdOption = document.getElementById('hd-option');
+    const darkTheme = document.getElementById('dark-theme');
+    const lightTheme = document.getElementById('light-theme');
+
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', () => {
+      // Charger les images depuis localStorage
+      loadImagesFromStorage();
+      
+      // Appliquer les effets de tilt aux cartes
+      VanillaTilt.init(document.querySelectorAll(".card"), {
+        max: 3,
+        speed: 400,
+        glare: true,
+        "max-glare": 0.1,
+      });
+
+      // Initialiser les gestionnaires d'événements
+      initEventListeners();
+    });
+
+    function initEventListeners() {
+      // Générer une image
+      generateBtn.addEventListener('click', genererImage);
+
+      // Navigation par onglets
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tabContents.forEach(tc => tc.classList.remove('active'));
+          
+          tab.classList.add('active');
+          const tabId = tab.dataset.tab;
+          document.getElementById(`${tabId}-tab`).classList.add('active');
+        });
+      });
+
+      // Sélection de style
+      styleItems.forEach(item => {
+        item.addEventListener('click', () => {
+          styleItems.forEach(si => si.classList.remove('active'));
+          item.classList.add('active');
+          currentStyle = item.dataset.style;
+        });
+      });
+
+      // Qualité d'image
+      qualitySlider.addEventListener('input', () => {
+        const value = qualitySlider.value;
+        if (value == 1) qualityValue.textContent = "Économique";
+        else if (value == 2) qualityValue.textContent = "Standard";
+        else qualityValue.textContent = "Élevée";
+      });
+
+      // Options avec toggle de classe active
+      enhanceOption.addEventListener('click', () => {
+        enhanceOption.classList.toggle('active');
+        enhanceCheck.checked = !enhanceCheck.checked;
+      });
+
+      hdOption.addEventListener('click', () => {
+        hdOption.classList.toggle('active');
+        hdCheck.checked = !hdCheck.checked;
+      });
+
+      // Boutons d'action
+      saveBtn.addEventListener('click', saveImage);
+      shareBtn.addEventListener('click', shareImage);
+      regenerateBtn.addEventListener('click', () => genererImage(true));
+
+      // Popup d'image
+      popupClose.addEventListener('click', () => {
+        imagePopup.classList.remove('show');
+      });
+
+      resultImage.addEventListener('click', () => {
+        popupImg.src = resultImage.src;
+        imagePopup.classList.add('show');
+      });
+
+      // Thèmes
+      darkTheme.addEventListener('click', () => {
+        darkTheme.classList.add('active');
+        lightTheme.classList.remove('active');
+        document.documentElement.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%)');
+        document.documentElement.style.setProperty('--card-bg', 'rgba(25, 25, 45, 0.8)');
+        document.documentElement.style.setProperty('--input-bg', 'rgba(15, 15, 30, 0.6)');
+        document.documentElement.style.setProperty('--text-color', '#ffffff');
+      });
+
+      lightTheme.addEventListener('click', () => {
+        lightTheme.classList.add('active');
+        darkTheme.classList.remove('active');
+        document.documentElement.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #f0f2f5 0%, #e0e7ff 100%)');
+        document.documentElement.style.setProperty('--card-bg', 'rgba(255, 255, 255, 0.8)');
+        document.documentElement.style.setProperty('--input-bg', 'rgba(240, 242, 245, 0.6)');
+        document.documentElement.style.setProperty('--text-color', '#333333');
+      });
+    }
+
+    // Fonction principale pour générer une image
+    function genererImage(isRegenerate = false) {
+      const prompt = promptInput.value.trim();
+      if (!prompt && !isRegenerate) {
+        showToast("Veuillez entrer une description pour votre image", "warning");
         return;
       }
 
-      const enhance = document.getElementById('enhance').checked;
+      if (isGenerating) {
+        showToast("Génération en cours, veuillez patienter...", "warning");
+        return;
+      }
+
+      isGenerating = true;
+      generateBtn.classList.add('btn-loading');
+      resultContainer.classList.add('show');
+      resultImage.style.display = 'none';
+      imageLoading.style.display = 'block';
+
+      // Préparer les paramètres
+      const enhance = enhanceCheck.checked;
+      const hd = hdCheck.checked;
+      const quality = qualitySlider.value;
       const seed = Date.now().toString() + Math.random().toString(36).substring(2);
 
       const params = new URLSearchParams();
       params.append('seed', seed);
       params.append('nologo', 'true');
       params.append('private', 'true');
-      if (enhance) {
-        params.append('enhance', 'true');
+      
+      if (enhance) params.append('enhance', 'true');
+      if (hd) params.append('hd', 'true');
+      if (quality > 1) params.append('quality', quality);
+      
+      // Construire le prompt final avec le style si sélectionné
+      let finalPrompt = prompt;
+      
+      if (currentStyle !== "aucun") {
+        finalPrompt += `, style ${currentStyle}`;
       }
 
-      const encodedPrompt = encodeURIComponent(prompt);
+      const encodedPrompt = encodeURIComponent(finalPrompt);
       const url = `https://image.pollinations.ai/prompt/${encodedPrompt}?${params.toString()}`;
 
-      const img = document.getElementById('resultat');
+      // Charger l'image
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = function() {
+        // Cacher le chargement et afficher l'image
+        imageLoading.style.display = 'none';
+        resultImage.style.display = 'block';
+        resultImage.src = this.src;
+        
+        // Sauvegarder dans l'historique
+        saveToHistory(this.src, finalPrompt);
+        
+        // Réinitialiser l'état
+        isGenerating = false;
+        generateBtn.classList.remove('btn-loading');
+        
+        // Animation sur l'image
+        resultImage.classList.add('animate__animated', 'animate__fadeIn');
+        setTimeout(() => {
+          resultImage.classList.remove('animate__animated', 'animate__fadeIn');
+        }, 1000);
+        
+        showToast("Image générée avec succès !", "success");
+      };
+      
+      img.onerror = function() {
+        imageLoading.style.display = 'none';
+        isGenerating = false;
+        generateBtn.classList.remove('btn-loading');
+        showToast("Erreur lors de la génération. Veuillez réessayer.", "warning");
+      };
+      
       img.src = url;
-      img.alt = `Image générée pour : ${prompt}`;
     }
+
+    // Fonction pour afficher des notifications toast
+    function showToast(message, type = "success") {
+      toast.textContent = message;
+      toast.className = `toast ${type} show`;
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Sauvegarder l'image dans l'historique
+    function saveToHistory(imageUrl, prompt) {
+      // Limiter à 20 images dans l'historique
+      if (generatedImages.length >= 20) {
+        generatedImages.pop();
+      }
+      
+      // Ajouter la nouvelle image au début
+      const newImage = {
+        url: imageUrl,
+        prompt: prompt,
+        date: new Date().toISOString()
+      };
+      
+      generatedImages.unshift(newImage);
+      
+      // Sauvegarder dans localStorage
+      localStorage.setItem('aiArtistImages', JSON.stringify(generatedImages));
+      
+      // Mettre à jour l'affichage
+      updateHistoryDisplay();
+    }
+
+    // Mettre à jour l'affichage de l'historique
+    function updateHistoryDisplay() {
+      historyContainer.innerHTML = '';
+      
+      if (generatedImages.length === 0) {
+        historyContainer.innerHTML = `<p class="tagline">Vos images générées apparaîtront ici</p>`;
+        return;
+      }
+      
+      generatedImages.forEach((img, index) => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+        historyItem.innerHTML = `<img src="${img.url}" alt="${img.prompt}" class="history-img">`;
+        
+        historyItem.addEventListener('click', () => {
+          popupImg.src = img.url;
+          imagePopup.classList.add('show');
+        });
+        
+        historyContainer.appendChild(historyItem);
+      });
+    }
+
+    // Charger les images depuis localStorage
+    function loadImagesFromStorage() {
+      const savedImages = localStorage.getItem('aiArtistImages');
+      if (savedImages) {
+        generatedImages = JSON.parse(savedImages);
+        updateHistoryDisplay();
+      }
+    }
+
+    // Fonction pour télécharger l'image
+    function saveImage() {
+      if (!resultImage.src) return;
+      
+      const link = document.createElement('a');
+      link.href = resultImage.src;
+      link.download = `artiste-ia-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      showToast("Image téléchargée !", "success");
+    }
+
+    // Fonction pour partager l'image
+    function shareImage() {
+      if (!resultImage.src) return;
+      
+      if (navigator.share) {
+        fetch(resultImage.src)
+          .then(res => res.blob())
+          .then(blob => {
+            const file = new File([blob], "artiste-ia.png", { type: "image/png" });
+            navigator.share({
+              title: 'Image générée par Artiste IA',
+              text: promptInput.value,
+              files: [file]
+            })
+            .then(() => showToast("Image partagée !", "success"))
+            .catch(err => showToast("Erreur lors du partage", "warning"));
+          });
+      } else {
+        // Fallback pour les navigateurs qui ne supportent pas l'API Web Share
+        const shareUrl = resultImage.src;
+        navigator.clipboard.writeText(shareUrl)
+          .then(() => showToast("Lien de l'image copié dans le presse-papiers !", "success"))
+          .catch(err => showToast("Erreur lors de la copie du lien", "warning"));
+      }
+    }
+
+    // Fonction pour améliorer un prompt
+    function enhancePrompt() {
+      const basePrompt = promptInput.value.trim();
+      if (!basePrompt) return;
+      
+      // Exemples d'améliorations
+      const enhancers = [
+        "haute résolution", "détaillé", "éclairage dramatique", 
+        "composition artistique", "rendu photoréaliste", "perspective intéressante"
+      ];
+      
+      // Ajouter 2-3 améliorateurs aléatoires
+      const numEnhancers = 2 + Math.floor(Math.random() * 2);
+      let selectedEnhancers = [];
+      
+      for (let i = 0; i < numEnhancers; i++) {
+        const randomIndex = Math.floor(Math.random() * enhancers.length);
+        selectedEnhancers.push(enhancers[randomIndex]);
+        enhancers.splice(randomIndex, 1);
+      }
+      
+      promptInput.value = `${basePrompt}, ${selectedEnhancers.join(", ")}`;
+    }
+
+    // Ajouter des conseils au placeholder du textarea
+    const promptPlaceholders = [
+      "Un chat astronaute flottant dans l'espace...",
+      "Un paysage fantastique avec des montagnes flottantes...",
+      "Une ville futuriste avec des bâtiments de cristal...",
+      "Un portrait de robot avec des émotions humaines...",
+      "Une forêt enchantée pleine de créatures magiques..."
+    ];
+
+    // Changer le placeholder périodiquement
+    setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * promptPlaceholders.length);
+      promptInput.placeholder = "Décrivez l'image de vos rêves... (ex: " + promptPlaceholders[randomIndex] + ")";
+    }, 5000);
   </script>
 </body>
 </html>
