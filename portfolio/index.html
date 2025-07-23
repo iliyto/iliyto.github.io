@@ -14,6 +14,14 @@
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
     <!-- Custom Tailwind Config -->
     <script>
         tailwind.config = {
@@ -21,12 +29,27 @@
             theme: {
                 extend: {
                     fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
                         'mono': ['JetBrains Mono', 'Monaco', 'Consolas', 'monospace'],
                     },
                     animation: {
-                        'fade-in': 'fadeIn 0.5s ease-in',
-                        'slide-up': 'slideUp 0.5s ease-out',
+                        'fade-in': 'fadeIn 0.6s ease-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
                         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    colors: {
+                        'primary': {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        },
+                        'gray': {
+                            50: '#f9fafb',
+                            100: '#f3f4f6',
+                            800: '#1f2937',
+                            900: '#111827',
+                        }
                     }
                 }
             }
@@ -47,7 +70,7 @@
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
 
             to {
@@ -56,56 +79,75 @@
             }
         }
 
-        .bg-gradient-dark {
-            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
-        .bg-gradient-light {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        .gradient-bg-dark {
+            background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%);
+        }
+
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .dark .card-hover:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 
-<body class="transition-colors duration-300"
-    :class="darkMode ? 'bg-gradient-dark text-white' : 'bg-gradient-light text-gray-900'">
+<body class="font-sans transition-colors duration-300"
+    :class="darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'">
 
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 backdrop-blur-md"
-        :class="darkMode ? 'bg-gray-900/80 border-gray-700' : 'bg-white/80 border-gray-200'" class="border-b">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav class="fixed top-0 w-full z-50 backdrop-blur-lg"
+        :class="darkMode ? 'bg-gray-900/95 border-gray-700' : 'bg-white/95 border-gray-200'" class="border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="text-xl font-bold font-mono">
-                    <span class="text-blue-500">&lt;</span>Ilias<span class="text-blue-500">/&gt;</span>
+                    <span class="text-primary-500">&lt;</span>
+                    <span class="text-gray-900 dark:text-white">Ilias</span>
+                    <span class="text-primary-500">/&gt;</span>
                 </div>
 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex space-x-8">
                     <a href="#about" @click="scrollTo('about')"
-                        class="hover:text-blue-500 transition-colors cursor-pointer">À propos</a>
+                        class="text-gray-600 dark:text-gray-300 hover:text-primary-500 transition-colors cursor-pointer font-medium">
+                        À propos
+                    </a>
                     <a href="#skills" @click="scrollTo('skills')"
-                        class="hover:text-blue-500 transition-colors cursor-pointer">Compétences</a>
+                        class="text-gray-600 dark:text-gray-300 hover:text-primary-500 transition-colors cursor-pointer font-medium">
+                        Compétences
+                    </a>
                     <a href="#projects" @click="scrollTo('projects')"
-                        class="hover:text-blue-500 transition-colors cursor-pointer">Projets</a>
+                        class="text-gray-600 dark:text-gray-300 hover:text-primary-500 transition-colors cursor-pointer font-medium">
+                        Projets
+                    </a>
                     <a href="#contact" @click="scrollTo('contact')"
-                        class="hover:text-blue-500 transition-colors cursor-pointer">Contact</a>
+                        class="text-gray-600 dark:text-gray-300 hover:text-primary-500 transition-colors cursor-pointer font-medium">
+                        Contact
+                    </a>
                 </div>
 
-                <!-- Dark Mode Toggle & Mobile Menu -->
+                <!-- Actions -->
                 <div class="flex items-center space-x-4">
                     <button @click="darkMode = !darkMode"
                         class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                        <span x-show="!darkMode">🌙</span>
-                        <span x-show="darkMode">☀️</span>
+                        <i :class="darkMode ? 'fas fa-sun' : 'fas fa-moon'" class="text-lg"></i>
                     </button>
 
                     <!-- Mobile Menu Button -->
                     <button @click="mobileMenu = !mobileMenu"
                         class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
+                        <i class="fas fa-bars text-lg"></i>
                     </button>
                 </div>
             </div>
@@ -113,41 +155,56 @@
             <!-- Mobile Menu -->
             <div x-show="mobileMenu" x-transition class="md:hidden py-4 space-y-2">
                 <a href="#about" @click="scrollTo('about'); mobileMenu = false"
-                    class="block py-2 hover:text-blue-500 transition-colors">À propos</a>
+                    class="block py-2 text-gray-600 dark:text-gray-300 hover:text-primary-500 transition-colors font-medium">
+                    À propos
+                </a>
                 <a href="#skills" @click="scrollTo('skills'); mobileMenu = false"
-                    class="block py-2 hover:text-blue-500 transition-colors">Compétences</a>
+                    class="block py-2 text-gray-600 dark:text-gray-300 hover:text-primary-500 transition-colors font-medium">
+                    Compétences
+                </a>
                 <a href="#projects" @click="scrollTo('projects'); mobileMenu = false"
-                    class="block py-2 hover:text-blue-500 transition-colors">Projets</a>
+                    class="block py-2 text-gray-600 dark:text-gray-300 hover:text-primary-500 transition-colors font-medium">
+                    Projets
+                </a>
                 <a href="#contact" @click="scrollTo('contact'); mobileMenu = false"
-                    class="block py-2 hover:text-blue-500 transition-colors">Contact</a>
+                    class="block py-2 text-gray-600 dark:text-gray-300 hover:text-primary-500 transition-colors font-medium">
+                    Contact
+                </a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center px-4 pt-16">
-        <div class="max-w-4xl mx-auto text-center">
+    <section class="min-h-screen flex items-center justify-center px-4 pt-16"
+        :class="darkMode ? 'gradient-bg-dark' : 'gradient-bg'">
+        <div class="max-w-5xl mx-auto text-center text-white">
             <div class="animate-slide-up">
-                <h1 class="text-4xl md:text-6xl font-bold mb-6 font-mono">
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
-                        Ilias Salmi
-                    </span>
+                <!-- Profile Image -->
+                <div
+                    class="w-32 h-32 mx-auto mb-8 rounded-full bg-white/10 backdrop-blur-lg border border-white/20 flex items-center justify-center">
+                    <i class="fas fa-code text-4xl text-white"></i>
+                </div>
+
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 font-mono">
+                    Ilias Salmi
                 </h1>
-                <p class="text-xl md:text-2xl mb-8 opacity-80">
+                <p class="text-xl md:text-2xl mb-4 text-white/90 font-medium">
                     Développeur Front-End autodidacte
                 </p>
-                <p class="text-lg mb-12 opacity-70 max-w-2xl mx-auto">
-                    Je développe des sites web élégants et responsives, conçus pour offrir une expérience optimale. Je
-                    mets l'utilisateur au cœur de mes réalisations.
+                <p class="text-lg mb-12 text-white/80 max-w-3xl mx-auto leading-relaxed">
+                    Spécialisé en Vue.js et Laravel, je conçois des applications web modernes
+                    avec une attention particulière à l’expérience utilisateur et aux performances.
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button @click="scrollTo('projects')"
-                        class="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-all transform hover:scale-105">
+                    <button @click="scrollTo('projects')" class="px-8 py-4 bg-white text-gray-900 rounded-lg font-semibold 
+                               hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg">
+                        <i class="fas fa-folder-open mr-2"></i>
                         Voir mes projets
                     </button>
-                    <a href="mailto:salmi.css@gmail.com"
-                        class="px-8 py-3 border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white rounded-lg font-semibold transition-all">
+                    <a href="mailto:salmi.css@gmail.com" class="px-8 py-4 border-2 border-white text-white hover:bg-white hover:text-gray-900 
+                               rounded-lg font-semibold transition-all shadow-lg">
+                        <i class="fas fa-envelope mr-2"></i>
                         Me contacter
                     </a>
                 </div>
@@ -155,152 +212,222 @@
 
             <!-- Scroll Indicator -->
             <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-                <div class="w-1 h-16 bg-gradient-to-b from-blue-500 to-transparent rounded-full"></div>
+                <i class="fas fa-chevron-down text-white/60 text-xl"></i>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
     <section id="about" class="py-20 px-4">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">À propos de moi</h2>
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center">À propos</h2>
 
-            <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <div class="space-y-6">
-                    <p class="text-lg opacity-80 leading-relaxed">
-                        Diplômé Technicien Spécialisé en Réseaux Informatiques avec une forte passion
-                        pour le développement web. Je crée des applications complètes avec une approche
-                        moderne et pragmatique.
+                    <p class="text-lg leading-relaxed text-gray-600 dark:text-gray-300">
+                        Diplômé Technicien Spécialisé en Réseaux Informatiques, je me suis formé de manière autodidacte
+                        au développement web front-end, porté par une véritable passion pour ce domaine.
+                        Mon approche allie expertise technique, curiosité constante et sens du design pour créer des
+                        expériences utilisateur fluides et élégantes.
                     </p>
-                    <p class="text-lg opacity-80 leading-relaxed">
-                        Mon parcours combine expertise technique et leadership, ayant encadré des équipes
-                        en marketing digital tout en me spécialisant dans les technologies web modernes.
+                    <p class="text-lg leading-relaxed text-gray-600 dark:text-gray-300">
+                        Grâce à mon expérience en leadership d'équipe et ma veille technologique continue, j’apporte une
+                        vision stratégique et innovante à chaque projet.
                     </p>
 
-                    <div class="space-y-4">
-                        <div class="flex items-center space-x-3">
-                            <span class="text-green-500">✓</span>
-                            <span>2+ ans d'expérience en développement web</span>
+                    <div class="space-y-4 mt-8">
+                        <div class="flex items-center space-x-4">
+                            <div
+                                class="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-green-600 dark:text-green-400 text-sm"></i>
+                            </div>
+                            <span class="text-gray-700 dark:text-gray-300">2+ ans d’expérience en développement
+                                web</span>
                         </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="text-green-500">✓</span>
-                            <span>Expert en Vue.js et Laravel</span>
+                        <div class="flex items-center space-x-4">
+                            <div
+                                class="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-green-600 dark:text-green-400 text-sm"></i>
+                            </div>
+                            <span class="text-gray-700 dark:text-gray-300">Expert en Vue.js et écosystème moderne</span>
                         </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="text-green-500">✓</span>
-                            <span>Passionné par l'IA et les nouvelles technologies</span>
+                        <div class="flex items-center space-x-4">
+                            <div
+                                class="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-green-600 dark:text-green-400 text-sm"></i>
+                            </div>
+                            <span class="text-gray-700 dark:text-gray-300">Passionné par l’innovation et l’IA</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="text-center">
-                    <div class="w-64 h-64 mx-auto mb-6 rounded-full border-4 border-blue-500/20 overflow-hidden">
+                    <div
+                        class="inline-block p-8 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-800 dark:to-gray-700 rounded-2xl">
                         <div
-                            class="w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-6xl">
-                            👨‍💻
+                            class="w-48 h-48 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white">
+                            <i class="fas fa-laptop-code text-6xl"></i>
                         </div>
+                        <p
+                            class="text-sm text-gray-500 dark:text-gray-400 font-medium flex items-center justify-center gap-2">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <picture>
+                                <source type="image/webp" srcset="https://flagcdn.com/24x18/fr.webp,
+      https://flagcdn.com/48x36/fr.webp 2x,
+      https://flagcdn.com/72x54/fr.webp 3x">
+                                <source type="image/png" srcset="https://flagcdn.com/24x18/fr.png,
+      https://flagcdn.com/48x36/fr.png 2x,
+      https://flagcdn.com/72x54/fr.png 3x">
+                                <img src="https://flagcdn.com/24x18/fr.png" width="24" height="18" alt="France">
+                            </picture>
+                            Île-de-France (78)
+
+                        </p>
                     </div>
-                    <p class="text-sm opacity-60">Basé en Île-de-France (78)</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Skills Section -->
-    <section id="skills" class="py-20 px-4" :class="darkMode ? 'bg-gray-900/20' : 'bg-white/50'">
+    <section id="skills" class="py-20 px-4" :class="darkMode ? 'bg-gray-800/50' : 'bg-white'">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Compétences techniques</h2>
+            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center">Compétences</h2>
 
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- Frontend -->
-                <div class="p-6 rounded-xl border"
-                    :class="darkMode ? 'border-gray-700 bg-gray-800/50' : 'border-gray-200 bg-white/80'">
-                    <h3 class="text-xl font-semibold mb-4 text-blue-500">Frontend</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center">
-                            <span>Vue.js</span>
-                            <span class="text-sm opacity-60">Expert</span>
+                <div class="card-hover p-8 rounded-2xl border"
+                    :class="darkMode ? 'border-gray-700 bg-gray-800/80' : 'border-gray-200 bg-white shadow-lg'">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-paint-brush text-blue-600 dark:text-blue-400 text-xl"></i>
                         </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="bg-blue-500 h-2 rounded-full w-11/12"></div>
+                        <h3 class="text-xl font-semibold">Frontend</h3>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium">Vue.js</span>
+                                <span class="text-sm text-gray-500">Expert</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full w-11/12"></div>
+                            </div>
                         </div>
 
-                        <div class="flex justify-between items-center">
-                            <span>JavaScript</span>
-                            <span class="text-sm opacity-60">Avancé</span>
-                        </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="bg-blue-500 h-2 rounded-full w-10/12"></div>
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium">JavaScript</span>
+                                <span class="text-sm text-gray-500">Avancé</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full w-10/12"></div>
+                            </div>
                         </div>
 
-                        <div class="flex justify-between items-center">
-                            <span>TailwindCSS</span>
-                            <span class="text-sm opacity-60">Avancé</span>
-                        </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="bg-blue-500 h-2 rounded-full w-10/12"></div>
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium">TailwindCSS</span>
+                                <span class="text-sm text-gray-500">Avancé</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full w-10/12"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Backend -->
-                <div class="p-6 rounded-xl border"
-                    :class="darkMode ? 'border-gray-700 bg-gray-800/50' : 'border-gray-200 bg-white/80'">
-                    <h3 class="text-xl font-semibold mb-4 text-green-500">Backend</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center">
-                            <span>Laravel</span>
-                            <span class="text-sm opacity-60">Expert</span>
+                <div class="card-hover p-8 rounded-2xl border"
+                    :class="darkMode ? 'border-gray-700 bg-gray-800/80' : 'border-gray-200 bg-white shadow-lg'">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-server text-green-600 dark:text-green-400 text-xl"></i>
                         </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="bg-green-500 h-2 rounded-full w-11/12"></div>
+                        <h3 class="text-xl font-semibold">Backend</h3>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium">Laravel</span>
+                                <span class="text-sm text-gray-500">Expert</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full w-11/12">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="flex justify-between items-center">
-                            <span>Node.js</span>
-                            <span class="text-sm opacity-60">Avancé</span>
-                        </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="bg-green-500 h-2 rounded-full w-10/12"></div>
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium">Node.js</span>
+                                <span class="text-sm text-gray-500">Avancé</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full w-10/12">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="flex justify-between items-center">
-                            <span>Python</span>
-                            <span class="text-sm opacity-60">Intermédiaire</span>
-                        </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="bg-green-500 h-2 rounded-full w-8/12"></div>
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium">Python</span>
+                                <span class="text-sm text-gray-500">Intermédiaire</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full w-8/12"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Tools -->
-                <div class="p-6 rounded-xl border"
-                    :class="darkMode ? 'border-gray-700 bg-gray-800/50' : 'border-gray-200 bg-white/80'">
-                    <h3 class="text-xl font-semibold mb-4 text-purple-500">Outils & Autres</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center">
-                            <span>Linux</span>
-                            <span class="text-sm opacity-60">Avancé</span>
+                <div class="card-hover p-8 rounded-2xl border"
+                    :class="darkMode ? 'border-gray-700 bg-gray-800/80' : 'border-gray-200 bg-white shadow-lg'">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-tools text-purple-600 dark:text-purple-400 text-xl"></i>
                         </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="bg-purple-500 h-2 rounded-full w-10/12"></div>
+                        <h3 class="text-xl font-semibold">Outils</h3>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium">Git & GitHub</span>
+                                <span class="text-sm text-gray-500">Avancé</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-purple-500 to-purple-600 h-2 rounded-full w-10/12">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="flex justify-between items-center">
-                            <span>Git</span>
-                            <span class="text-sm opacity-60">Avancé</span>
-                        </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="bg-purple-500 h-2 rounded-full w-9/12"></div>
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium">Linux</span>
+                                <span class="text-sm text-gray-500">Avancé</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-purple-500 to-purple-600 h-2 rounded-full w-9/12">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="flex justify-between items-center">
-                            <span>Docker</span>
-                            <span class="text-sm opacity-60">Intermédiaire</span>
-                        </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="bg-purple-500 h-2 rounded-full w-7/12"></div>
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium">Docker</span>
+                                <span class="text-sm text-gray-500">Intermédiaire</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-purple-500 to-purple-600 h-2 rounded-full w-7/12">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -311,82 +438,137 @@
     <!-- Projects Section -->
     <section id="projects" class="py-20 px-4">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Projets récents</h2>
+            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center">Projets</h2>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Project 1: Artiste AI -->
-                <div class="group border rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
-                    :class="darkMode ? 'border-gray-700 bg-gray-800/50' : 'border-gray-200 bg-white'">
-                    <div
-                        class="h-48 bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
-                        <span class="text-4xl">🎨</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">Artiste IA</h3>
-                        <p class="opacity-70 mb-4">Générateur d'images IA avec interface moderne et animations fluides.
+                <div class="group relative border rounded-xl p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden"
+                    :class="darkMode ? 'border-gray-700 bg-gray-800/50 hover:bg-gray-800/80' : 'border-gray-200 bg-white hover:shadow-lg'">
+
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold mb-2 group-hover:text-primary-500 transition-colors">
+                            Artiste IA
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                            Générateur d'images alimenté par l'IA avec interface utilisateur moderne et animations
+                            fluides.
                         </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-2 py-1 text-xs bg-blue-500/20 text-blue-500 rounded">JavaScript</span>
-                            <span class="px-2 py-1 text-xs bg-green-500/20 text-green-500 rounded">API</span>
-                            <span class="px-2 py-1 text-xs bg-purple-500/20 text-purple-500 rounded">CSS3</span>
-                        </div>
-                        <div class="flex space-x-3">
-                            <a href="./projects/artiste-ai/" target="_blank"
-                                class="flex-1 text-center py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
-                                Démo
-                            </a>
-                            <a href="https://github.com/iliyto/artiste-ai" target="_blank"
-                                class="flex-1 text-center py-2 border border-blue-500 text-blue-500 rounded hover:bg-blue-500 hover:text-white transition-colors">
-                                Code
-                            </a>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span
+                            class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+                            JavaScript
+                        </span>
+                        <span
+                            class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+                            API REST
+                        </span>
+                        <span
+                            class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+                            CSS3
+                        </span>
+                    </div>
+
+                    <div class="flex space-x-2 text-sm mb-4">
+                        <a href="./projects/artiste-ai/" target="_blank"
+                            class="flex-1 text-center py-2 bg-primary-500 text-white rounded hover:bg-primary-600 transition-colors">
+                            Démo
+                        </a>
+                        <a href="https://github.com/iliyto/artiste-ai" target="_blank"
+                            class="flex-1 text-center py-2 border border-gray-300 dark:border-gray-600 rounded hover:border-primary-500 hover:text-primary-500 transition-colors">
+                            Code
+                        </a>
+                    </div>
+
+                    <!-- Simple Progress Bar with Tailwind -->
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700">
+                        <div
+                            class="h-full bg-primary-500 w-0 group-hover:w-full transition-all duration-500 ease-out origin-left">
                         </div>
                     </div>
                 </div>
 
-                <!-- Project 2: Placeholder for Vue.js projects -->
-                <div class="group border rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
-                    :class="darkMode ? 'border-gray-700 bg-gray-800/50' : 'border-gray-200 bg-white'">
-                    <div
-                        class="h-48 bg-gradient-to-br from-green-500/20 to-blue-500/20 flex items-center justify-center">
-                        <span class="text-4xl">⚡</span>
+                <!-- Project 2: Vue.js Projects -->
+                <div class="group relative border rounded-xl p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden"
+                    :class="darkMode ? 'border-gray-700 bg-gray-800/50 hover:bg-gray-800/80' : 'border-gray-200 bg-white hover:shadow-lg'">
+
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold mb-2 group-hover:text-primary-500 transition-colors">
+                            Applications Vue.js
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                            Collection d'applications modernes développées avec Vue.js et son écosystème.
+                        </p>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">Projets Vue.js</h3>
-                        <p class="opacity-70 mb-4">Collection d'applications Vue.js modernes avec des fonctionnalités
-                            avancées.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-2 py-1 text-xs bg-green-500/20 text-green-500 rounded">Vue.js</span>
-                            <span class="px-2 py-1 text-xs bg-blue-500/20 text-blue-500 rounded">TypeScript</span>
-                            <span class="px-2 py-1 text-xs bg-purple-500/20 text-purple-500 rounded">Pinia</span>
-                        </div>
-                        <div class="flex space-x-3">
-                            <button class="flex-1 text-center py-2 bg-gray-400 text-white rounded cursor-not-allowed">
-                                Bientôt...
-                            </button>
+
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span
+                            class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+                            Vue.js
+                        </span>
+                        <span
+                            class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+                            TypeScript
+                        </span>
+                        <span
+                            class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+                            Pinia
+                        </span>
+                    </div>
+
+                    <div class="text-sm mb-4">
+                        <button class="w-full py-2 bg-gray-400 text-white rounded cursor-not-allowed">
+                            Bientôt disponible
+                        </button>
+                    </div>
+
+                    <!-- Simple Progress Bar with Tailwind -->
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700">
+                        <div
+                            class="h-full bg-primary-500 w-0 group-hover:w-full transition-all duration-500 ease-out origin-left">
                         </div>
                     </div>
                 </div>
 
-                <!-- Project 3: Placeholder -->
-                <div class="group border rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
-                    :class="darkMode ? 'border-gray-700 bg-gray-800/50' : 'border-gray-200 bg-white'">
-                    <div
-                        class="h-48 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
-                        <span class="text-4xl">🚀</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">Projets Laravel</h3>
-                        <p class="opacity-70 mb-4">Applications web robustes développées avec Laravel et API modernes.
+                <!-- Project 3: Laravel Projects -->
+                <div class="group relative border rounded-xl p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden"
+                    :class="darkMode ? 'border-gray-700 bg-gray-800/50 hover:bg-gray-800/80' : 'border-gray-200 bg-white hover:shadow-lg'">
+
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold mb-2 group-hover:text-primary-500 transition-colors">
+                            Applications Laravel
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                            Applications web robustes avec Laravel, APIs RESTful et architectures modernes.
                         </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-2 py-1 text-xs bg-red-500/20 text-red-500 rounded">Laravel</span>
-                            <span class="px-2 py-1 text-xs bg-blue-500/20 text-blue-500 rounded">MySQL</span>
-                            <span class="px-2 py-1 text-xs bg-green-500/20 text-green-500 rounded">API REST</span>
-                        </div>
-                        <div class="flex space-x-3">
-                            <button class="flex-1 text-center py-2 bg-gray-400 text-white rounded cursor-not-allowed">
-                                Bientôt...
-                            </button>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span
+                            class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+                            Laravel
+                        </span>
+                        <span
+                            class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+                            MySQL
+                        </span>
+                        <span
+                            class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+                            API REST
+                        </span>
+                    </div>
+
+                    <div class="text-sm mb-4">
+                        <button class="w-full py-2 bg-gray-400 text-white rounded cursor-not-allowed">
+                            Bientôt disponible
+                        </button>
+                    </div>
+
+                    <!-- Simple Progress Bar with Tailwind -->
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700">
+                        <div
+                            class="h-full bg-primary-500 w-0 group-hover:w-full transition-all duration-500 ease-out origin-left">
                         </div>
                     </div>
                 </div>
@@ -394,60 +576,76 @@
 
             <div class="text-center mt-12">
                 <a href="https://github.com/iliyto" target="_blank"
-                    class="inline-flex items-center space-x-2 px-6 py-3 border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white rounded-lg font-semibold transition-all">
+                    class="inline-flex items-center space-x-2 px-6 py-3 border border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white rounded-lg transition-all">
                     <span>Voir tous mes projets sur GitHub</span>
-                    <span>→</span>
+                    <i class="fas fa-arrow-right text-sm"></i>
                 </a>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-20 px-4" :class="darkMode ? 'bg-gray-900/20' : 'bg-white/50'">
+    <section id="contact" class="py-20 px-4" :class="darkMode ? 'bg-gray-800/50' : 'bg-white'">
         <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-8">Travaillons ensemble</h2>
-            <p class="text-xl opacity-80 mb-12 max-w-2xl mx-auto">
-                Vous avez un projet en tête ? Je serais ravi d'en discuter avec vous.
+            <h2 class="text-4xl md:text-5xl font-bold mb-8">Collaborons ensemble</h2>
+            <p class="text-xl text-gray-600 dark:text-gray-300 mb-16 max-w-2xl mx-auto">
+                Vous avez un projet en tête ? Discutons de la façon dont nous pouvons
+                le concrétiser ensemble.
             </p>
 
-            <div class="grid md:grid-cols-3 gap-8 mb-12">
-                <a href="mailto:salmi.css@gmail.com"
-                    class="flex flex-col items-center space-y-3 p-6 rounded-xl border hover:shadow-lg transition-all"
-                    :class="darkMode ? 'border-gray-700 hover:bg-gray-800/50' : 'border-gray-200 hover:bg-white'">
-                    <div class="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center">
-                        <span class="text-2xl">📧</span>
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <a href="mailto:salmi.css@gmail.com" class="card-hover p-8 rounded-2xl border transition-all"
+                    :class="darkMode ? 'border-gray-700 bg-gray-800/80 hover:bg-gray-700/50' : 'border-gray-200 bg-white hover:bg-gray-50 shadow-lg'">
+                    <div
+                        class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-envelope text-blue-600 dark:text-blue-400 text-xl"></i>
                     </div>
-                    <span class="font-semibold">Email</span>
-                    <span class="text-sm opacity-60">salmi.css@gmail.com</span>
+                    <h3 class="font-semibold mb-2">Email</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">salmi.css@gmail.com</p>
                 </a>
 
                 <a href="https://github.com/iliyto" target="_blank"
-                    class="flex flex-col items-center space-y-3 p-6 rounded-xl border hover:shadow-lg transition-all"
-                    :class="darkMode ? 'border-gray-700 hover:bg-gray-800/50' : 'border-gray-200 hover:bg-white'">
-                    <div class="w-12 h-12 bg-gray-500/20 rounded-full flex items-center justify-center">
-                        <span class="text-2xl">⚡</span>
+                    class="card-hover p-8 rounded-2xl border transition-all"
+                    :class="darkMode ? 'border-gray-700 bg-gray-800/80 hover:bg-gray-700/50' : 'border-gray-200 bg-white hover:bg-gray-50 shadow-lg'">
+                    <div
+                        class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fab fa-github text-gray-600 dark:text-gray-400 text-xl"></i>
                     </div>
-                    <span class="font-semibold">GitHub</span>
-                    <span class="text-sm opacity-60">@iliyto</span>
+                    <h3 class="font-semibold mb-2">GitHub</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">@iliyto</p>
                 </a>
 
-                <div class="flex flex-col items-center space-y-3 p-6 rounded-xl border"
-                    :class="darkMode ? 'border-gray-700' : 'border-gray-200'">
-                    <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center">
-                        <span class="text-2xl">📍</span>
+                <div class="card-hover p-8 rounded-2xl border"
+                    :class="darkMode ? 'border-gray-700 bg-gray-800/80' : 'border-gray-200 bg-white shadow-lg'">
+                    <div
+                        class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-map-marker-alt text-green-600 dark:text-green-400 text-xl"></i>
                     </div>
-                    <span class="font-semibold">Localisation</span>
-                    <span class="text-sm opacity-60">Île-de-France (78)</span>
+                    <h3 class="font-semibold mb-2">Localisation</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2 justify-center">
+                        <picture>
+                            <source type="image/webp" srcset="https://flagcdn.com/24x18/fr.webp,
+      https://flagcdn.com/48x36/fr.webp 2x,
+      https://flagcdn.com/72x54/fr.webp 3x">
+                            <source type="image/png" srcset="https://flagcdn.com/24x18/fr.png,
+      https://flagcdn.com/48x36/fr.png 2x,
+      https://flagcdn.com/72x54/fr.png 3x">
+                            <img src="https://flagcdn.com/24x18/fr.png" width="24" height="18" alt="France">
+                        </picture>
+                        Île-de-France (78)
+                    </p>
                 </div>
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="mailto:salmi.css@gmail.com"
-                    class="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-all transform hover:scale-105">
+                <a href="mailto:salmi.css@gmail.com" class="px-8 py-4 bg-primary-500 hover:bg-primary-600 text-white rounded-lg 
+                           font-semibold transition-all transform hover:scale-105 shadow-lg">
+                    <i class="fas fa-paper-plane mr-2"></i>
                     Commencer un projet
                 </a>
-                <a href="/assets/docs/cv-ilias-salmi.pdf" target="_blank"
-                    class="px-8 py-3 border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white rounded-lg font-semibold transition-all">
+                <a href="/assets/docs/cv-ilias-salmi.pdf" target="_blank" class="px-8 py-4 border-2 border-primary-500 text-primary-500 hover:bg-primary-500 
+                           hover:text-white rounded-lg font-semibold transition-all shadow-lg">
+                    <i class="fas fa-download mr-2"></i>
                     Télécharger mon CV
                 </a>
             </div>
@@ -455,10 +653,10 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-8 px-4 border-t" :class="darkMode ? 'border-gray-700' : 'border-gray-200'">
+    <footer class="py-8 px-4 border-t" :class="darkMode ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-gray-50'">
         <div class="max-w-6xl mx-auto text-center">
-            <p class="opacity-60">
-                © 2025 Ilias Salmi. Développé avec ❤️ en utilisant Alpine.js et TailwindCSS.
+            <p class="text-gray-500 dark:text-gray-400">
+                © 2025 Ilias Salmi. Développé avec Alpine.js et TailwindCSS.
             </p>
         </div>
     </footer>
@@ -481,14 +679,21 @@
                     if (savedMode !== null) {
                         this.darkMode = savedMode === 'true';
                     }
+
+                    // Smooth scroll behavior
+                    document.documentElement.style.scrollBehavior = 'smooth';
                 },
 
                 scrollTo(elementId) {
                     const element = document.getElementById(elementId);
                     if (element) {
-                        element.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
+                        const headerOffset = 80;
+                        const elementPosition = element.offsetTop;
+                        const offsetPosition = elementPosition - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
                         });
                     }
                 }
